@@ -52,6 +52,7 @@ class ChosenPlaintextAttack(Attack):
                 data = bytes.fromhex(self._encrypt((b'A' * (i - 1) + found + bytes([j])).hex(), self._server))
                 if data[block_number * self._block_size:(block_number + 1) * self._block_size] == last_block_value:
                     found += bytes([j])
+                    print(f"Found: {found.decode()}")
                     break
             i -= 1
             run_at_most -= 1
