@@ -189,9 +189,16 @@ class BCDetector:
             attack = PaddingOracleAttack(self.encrypt, self.decrypt, self.__state.get_block_size(), self.__server_instance)
             attack_string = "Padding Oracle Attack"
 
-        answer = input(f"Would you like to perform a {attack_string}? (Y/n) ")
-        print(answer)
-        if answer.lower() == "y" or not answer or answer == "\n":
+        answered_yes = lambda a: a.strip().lower() == "y" or not a or a == "\n"
+
+        ans = input(f"Would you like to perform a {attack_string}? (Y/n) ")
+        
+        print(ans)
+        if answered_yes(ans):
+            if most_probable == "ECB":
+                ans = input(f"Optimize search space for printable ascii? (Y/n) ")
+                print(ans)
+                attack._search_space = (32, 127) if answered_yes(ans) else (0, 256)
             self.__logger.log(f"Starting {attack_string}.")
             attack.run()
             self.__logger.log(f"{attack_string} complete.")

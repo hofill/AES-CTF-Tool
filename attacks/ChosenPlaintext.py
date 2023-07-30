@@ -48,7 +48,7 @@ class ChosenPlaintextAttack(Attack):
         while i and run_at_most:
             data = bytes.fromhex(self._encrypt((b'A' * (i - 1)).hex(), self._server))
             last_block_value = data[block_number * self._block_size:(block_number + 1) * self._block_size]
-            for j in range(256):
+            for j in range(self._search_space[0], self._search_space[1]):
                 data = bytes.fromhex(self._encrypt((b'A' * (i - 1) + found + bytes([j])).hex(), self._server))
                 if data[block_number * self._block_size:(block_number + 1) * self._block_size] == last_block_value:
                     found += bytes([j])
